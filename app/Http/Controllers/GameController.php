@@ -7,27 +7,25 @@ use Illuminate\Http\Request;
 
 class GameController extends Controller
 {
-    public function index()
+    public function personal_index()
     {
         {
-
             $dl = new DataLayer();
-            $user_id = $dl->getUserId($_SESSION['username']);
-            $software_houses = $dl->list_software_houses($user_id);
-            $hasGames = $dl->has_games_array($software_houses, $user_id);
+            $user_id = $dl->getUserId($_SESSION['mail']);
+            $games = $dl->listGames($user_id);
 
-            return view('software_house.ViewSoftwareHouses')->with('logged', true)->with('username', $_SESSION['username'])->with('software_houses', $software_houses)->with('hasGames', $hasGames);
+            return view('game.myGames')->with('logged', true)->with('games', $games);
         }
     }
 
     public function create()
     {
         {
-            return view('software_house.addSH')->with('username', $_SESSION['username']);
+            return view('game.addGame')->with('logged', true);
         }
     }
 
-    public function edit($software_house_id)
+    public function edit($game_id)
     {
         $dl = new DataLayer();
         $software_house = $dl->find_software_house_by_id($software_house_id);
